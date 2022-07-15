@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 project(robot-low-level-backend CXX)
 
 include(CheckIncludeFileCXX)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib)
 
 check_include_file_cxx(any HAS_ANY)
 check_include_file_cxx(string_view HAS_STRING_VIEW)
@@ -63,6 +64,9 @@ target_include_directories(${PROJECT_NAME}
                            PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
                                    ${CMAKE_CURRENT_SOURCE_DIR}/models
                                    ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+message(STATUS ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+
 target_sources(${PROJECT_NAME}
                PRIVATE
                ${SRC_DIR}
@@ -74,3 +78,4 @@ target_sources(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE server)
+target_link_libraries(${PROJECT_NAME} PRIVATE libunitree_legged_sdk_amd64.so lcm)
