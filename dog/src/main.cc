@@ -1,10 +1,12 @@
 #include <drogon/drogon.h>
-int main() {
-    //Set HTTP listener address and port
+
+int main()
+{
     drogon::app()
-        .addListener("0.0.0.0",80)
-        .loadConfigFile("../config.json")
+        .loadConfigFile("./config.json")
+        .setLogLevel(trantor::Logger::kTrace)
+        .setLogPath(".", "log_")
         .run();
 
-    return EXIT_SUCCESS;
+    return 0;
 }
