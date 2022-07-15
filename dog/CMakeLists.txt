@@ -55,8 +55,8 @@ else ()
 endif ()
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src/controllers CTL_SRC)
-aux_source_directory(filters FILTER_SRC)
-aux_source_directory(plugins PLUGIN_SRC)
+# aux_source_directory(filters FILTER_SRC)
+# aux_source_directory(plugins PLUGIN_SRC)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src/models MODEL_SRC)
 
 target_include_directories(${PROJECT_NAME}
@@ -68,8 +68,8 @@ target_sources(${PROJECT_NAME}
                ${SRC_DIR}
                ${CTL_SRC}
             #    ${CMAKE_CURRENT_SOURCE_DIR}/controllers/v1.cc
-               ${FILTER_SRC}
-               ${PLUGIN_SRC}
+            #    ${FILTER_SRC}
+            #    ${PLUGIN_SRC}
             #    ${MODEL_SRC}
 )
 
