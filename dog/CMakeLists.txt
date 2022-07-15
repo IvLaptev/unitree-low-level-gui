@@ -23,7 +23,9 @@ add_library(server
     ${CMAKE_CURRENT_SOURCE_DIR}/src/models/connection.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/include/server/models/connection.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/models/motion.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/server/models/motion.h)
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/server/models/motion.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/store.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/server/store.h)
 
 target_include_directories(server PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
