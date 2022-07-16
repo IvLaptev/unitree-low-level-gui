@@ -34,7 +34,9 @@ target_include_directories(server PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 # Build robot control components
 add_library(robot
     ${CMAKE_CURRENT_SOURCE_DIR}/src/robot/robot.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/robot/robot.h)
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/robot/robot.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/robot/controller.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/robot/controller.h)
 
 target_include_directories(robot PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
