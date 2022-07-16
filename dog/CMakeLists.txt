@@ -36,7 +36,9 @@ add_library(robot
     ${CMAKE_CURRENT_SOURCE_DIR}/src/robot/robot.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/include/robot/robot.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/robot/controller.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/robot/controller.h)
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/robot/controller.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/robot/program.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/robot/program.h)
 
 target_include_directories(robot PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
