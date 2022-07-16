@@ -52,3 +52,8 @@ Robot::Program::Program(std::vector<Server::Motion> &motions)
     //     }
     // }
 }
+
+void Robot::Program::next_tick()
+{
+    
+}

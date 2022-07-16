@@ -20,7 +20,7 @@ void Server::V1::setMotions(const drogon::HttpRequestPtr &req,
                   std::vector<Server::Motion> &&pMotions)
 {
     // Save motions to store
-    Server::Store::getData().motions.push_back(pMotions);
+    Server::Store::getData().addMotions(pMotions);
 
     auto resp = drogon::HttpResponse::newHttpResponse();
     resp->setStatusCode(drogon::k200OK);

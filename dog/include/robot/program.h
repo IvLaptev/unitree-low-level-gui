@@ -8,9 +8,12 @@ namespace Robot
 {
     class Program
     {
-        unsigned max_ticks;
         std::vector< std::vector< Server::Motion *> > legs_commands;
     public:
+        unsigned max_ticks;
+
         Program(std::vector<Server::Motion> &);
+
+        void next_tick();
     };
 }

@@ -1,4 +1,7 @@
 #include <robot/controller.h>
+#include <server/store.h>
+
+#include <iostream>
 
 Robot::Controller::Controller()
 {
@@ -7,24 +10,37 @@ Robot::Controller::Controller()
     UNITREE_LEGGED_SDK::InitEnvironment();
 
     // Setting udp message every dt
-    UNITREE_LEGGED_SDK::LoopFunc loop_udbSend("udp_send", dt, boost::bind(&Robot::UDPSend, robot.get()));
+    loop_udbSend = new UNITREE_LEGGED_SDK::LoopFunc("udp_send", dt, boost::bind(&Robot::UDPSend, robot.get()));
     // Getting robot feedback every dt
-    UNITREE_LEGGED_SDK::LoopFunc loop_udpResv("udp_recv", dt, boost::bind(&Robot::UDPRecv, robot.get()));
+    loop_udpResv = new UNITREE_LEGGED_SDK::LoopFunc("udp_recv", dt, boost::bind(&Robot::UDPRecv, robot.get()));
     // Counting next control command every dt
-    UNITREE_LEGGED_SDK::LoopFunc loop_control("control",  dt, boost::bind(&Controller::control, this));
+    loop_control = new UNITREE_LEGGED_SDK::LoopFunc("control",  dt, boost::bind(&Controller::control, this));
 
-    loop_udpResv.start();
-    loop_udbSend.start();
-    loop_control.start();
+    // loop_udpResv->start();
+    // loop_udbSend->start();
+    loop_control->start();
 }
 
 void Robot::Controller::control()
 {
     motion_time += 1;
     
-    std::unique_ptr<UNITREE_LEGGED_SDK::LowState> state(robot->getState());
+    // std::unique_ptr<UNITREE_LEGGED_SDK::LowState> state(robot->getState());
+
+    if (motion_time % 500 == 0 && program == nullptr)
+    {
+        std::cout << "Get program" << std::endl;
+
+        std::vector<Server::Motion> motions = Server::Store::getData().getMotions();
+        if (motions.size() != 0)
+        {
+            program = std::unique_ptr<Program>(new Program(motions));
+            std::cout << program->max_ticks << std::endl;
+        }
+    }
     
+    // std::cout << " N";
     // Body of strategy
 
-    robot->setCmd();
+    // robot->setCmd();
 }
