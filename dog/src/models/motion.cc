@@ -1,8 +1,6 @@
 #include <vector>
 #include <drogon/drogon.h>
 #include <server/models/motion.h>
-#include <iostream>
-#include <server/store.h>
 
 namespace drogon
 {
@@ -29,8 +27,6 @@ namespace drogon
 
             motions.push_back(motion);
         }
-
-        // std::cout << Server::Store::getData().motions.size() << std::endl;
 
         return motions;
     }

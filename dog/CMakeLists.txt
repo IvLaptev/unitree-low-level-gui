@@ -20,6 +20,7 @@ endif ()
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Build server components
 add_library(server
     ${CMAKE_CURRENT_SOURCE_DIR}/src/models/connection.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/include/server/models/connection.h
@@ -29,6 +30,13 @@ add_library(server
     ${CMAKE_CURRENT_SOURCE_DIR}/include/server/store.h)
 
 target_include_directories(server PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+# Build robot control components
+add_library(robot
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/robot/robot.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/robot/robot.h)
+
+target_include_directories(robot PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 add_executable(${PROJECT_NAME} src/main.cc)
 
@@ -77,5 +85,5 @@ target_sources(${PROJECT_NAME}
             #    ${MODEL_SRC}
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE server)
+target_link_libraries(${PROJECT_NAME} PRIVATE server robot)
 target_link_libraries(${PROJECT_NAME} PRIVATE libunitree_legged_sdk_amd64.so lcm)

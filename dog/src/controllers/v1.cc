@@ -7,6 +7,7 @@ void Server::V1::connect(const drogon::HttpRequestPtr &req,
                   std::function<void (const drogon::HttpResponsePtr &)> &&callback,
                   Server::Connection &&pConnection)
 {
+    // TODO: Lock channel
     std::cout << pConnection.ip << std::endl;
 
     auto resp = drogon::HttpResponse::newHttpResponse();
@@ -18,7 +19,7 @@ void Server::V1::setMotions(const drogon::HttpRequestPtr &req,
                   std::function<void (const drogon::HttpResponsePtr &)> &&callback,
                   std::vector<Server::Motion> &&pMotions)
 {
-    std::cout << unsigned(pMotions[2].leg) << std::endl;
+    // Save motions to store
     Server::Store::getData().motions.push_back(pMotions);
 
     auto resp = drogon::HttpResponse::newHttpResponse();

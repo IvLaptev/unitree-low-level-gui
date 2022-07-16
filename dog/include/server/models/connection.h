@@ -9,7 +9,7 @@ namespace Server
     {
         std::string ip;
         int         port;
-        std::string client_version;
+        std::string client_version; // GUI version
     };
 }
 

@@ -13,8 +13,9 @@ namespace Server
         Store(const Store &);
         Store& operator=(Store &);
     public:
+        // Stores motions from gui app
         std::vector< std::vector<Server::Motion> > motions = {};
-        
+
         static Store& getData();
     };
 }
