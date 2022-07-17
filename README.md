@@ -17,6 +17,13 @@ The solution consists of two parts:
 
     Commands sent to the robot are formed on the client side (GUI).
 
+Supported control modes:
+
+- [x] Position mode
+- [ ] Velocity mode
+- [ ] Torque mode 
+- [ ] Compound mode
+
 ## Run
 
 You are able to:
