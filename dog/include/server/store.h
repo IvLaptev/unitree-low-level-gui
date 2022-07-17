@@ -21,6 +21,8 @@ namespace Server
 
         std::vector<Server::Motion> getMotions();
 
-        void addMotions(std::vector<Server::Motion> &);
+        void addMotions(std::vector<Server::Motion>);
+
+        void nextMotion();
     };
 }

@@ -8,12 +8,14 @@ namespace Robot
 {
     class Program
     {
-        std::vector< std::vector< Server::Motion *> > legs_commands;
-    public:
         unsigned max_ticks;
-
+        unsigned curr_tick = 0;
+    public:
+        std::vector< std::vector< int > > legs_commands;
         Program(std::vector<Server::Motion> &);
 
-        void next_tick();
+        void next_tick(const UNITREE_LEGGED_SDK::LowState &, UNITREE_LEGGED_SDK::LowCmd &);
+
+        bool is_finished();
     };
 }

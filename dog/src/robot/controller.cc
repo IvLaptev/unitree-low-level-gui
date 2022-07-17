@@ -17,16 +17,12 @@ Robot::Controller::Controller()
     loop_control = new UNITREE_LEGGED_SDK::LoopFunc("control",  dt, boost::bind(&Controller::control, this));
 
     // loop_udpResv->start();
-    // loop_udbSend->start();
+    loop_udbSend->start();
     loop_control->start();
 }
 
-void Robot::Controller::control()
+void Robot::Controller::load_program()
 {
-    motion_time += 1;
-    
-    // std::unique_ptr<UNITREE_LEGGED_SDK::LowState> state(robot->getState());
-
     if (motion_time % 500 == 0 && program == nullptr)
     {
         std::cout << "Get program" << std::endl;
@@ -35,12 +31,39 @@ void Robot::Controller::control()
         if (motions.size() != 0)
         {
             program = std::unique_ptr<Program>(new Program(motions));
-            std::cout << program->max_ticks << std::endl;
+            if (program)
+            {
+                std::cout << "Loaded" << std::endl;
+            }
+            
+        // std::cout << (*(program->legs_commands[0][159])).duration << std::endl;
         }
     }
-    
-    // std::cout << " N";
-    // Body of strategy
+}
 
-    // robot->setCmd();
+void Robot::Controller::control()
+{
+    // std::cout << "1" << std::endl;
+    load_program();
+    // if (program)
+    // {
+    //     std::cout  << std::endl;
+    //     std::cout << program->legs_commands[0][159] << std::endl;
+    // }
+
+    // std::unique_ptr<UNITREE_LEGGED_SDK::LowState> state(robot->getState());
+
+    if (program)
+    {
+        program->next_tick(robot->state, robot->cmd);
+
+        if (program->is_finished())
+        {
+            program = nullptr;
+            Server::Store::getData().nextMotion();
+        }
+    }
+
+    robot->setCmd();
+    motion_time += 1;
 }

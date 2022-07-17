@@ -12,6 +12,8 @@ namespace Robot
         UNITREE_LEGGED_SDK::LoopFunc *loop_udbSend;
         UNITREE_LEGGED_SDK::LoopFunc *loop_udpResv;
         UNITREE_LEGGED_SDK::LoopFunc *loop_control;
+
+        void load_program();
     public:
         Controller();
 
