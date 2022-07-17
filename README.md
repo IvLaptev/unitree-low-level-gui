@@ -41,3 +41,46 @@ You are able to:
 *   [Drogon](https://drogon.docsforge.com/master/installation) (использовалась 1.7.5)
 *   [Boost](https://www.boost.org/doc/libs/1_79_0/more/getting_started/unix-variants.html) (1.61.0 or higher)
 *   [LCM](https://lcm-proj.github.io/build_instructions.html) (1.4.0 or higher)
+
+#### Build
+
+**Server**
+
+*   Run the following commands in terminal:
+
+    ```bash
+    cd ./dog
+    mkdir build
+    cd ./build
+    cmake ..
+    make
+    ```
+
+#### Run
+
+**Server**
+
+*   Create file `config.json` with server configuration in `robot-low-level-backend`. Example:
+
+    ```json
+    {
+        "listeners": [
+            {
+                "adreess": "0.0.0.0",
+                "port": 5000,
+                "https": false
+            }
+        ],
+        "app": {
+            "number_of_threads": 2,
+            "server_header_field": ""
+        }
+    }
+    ```
+
+*   To run application execute:
+
+    ```bash
+    sudo ./robot-low-level-backend
+    ```
+

@@ -38,3 +38,44 @@
 *   [Boost](https://www.boost.org/doc/libs/1_79_0/more/getting_started/unix-variants.html) (1.61.0 или выше)
 *   [LCM](https://lcm-proj.github.io/build_instructions.html) (1.4.0 или выше)
 
+#### Сборка
+
+**Сервер**
+
+*   В командной строке выполнить:
+
+    ```bash
+    cd ./dog
+    mkdir build
+    cd ./build
+    cmake ..
+    make
+    ```
+
+#### Запуск
+
+**Сервер**
+
+*   В папке с файлом `robot-low-level-backend` создать `config.json` с конфигурацией HTTP сервера. Пример:
+
+    ```json
+    {
+        "listeners": [
+            {
+                "adreess": "0.0.0.0",
+                "port": 5000,
+                "https": false
+            }
+        ],
+        "app": {
+            "number_of_threads": 2,
+            "server_header_field": ""
+        }
+    }
+    ```
+
+*   Для запуска приложения выполнить команду:
+
+    ```bash
+    sudo ./robot-low-level-backend
+    ```
