@@ -31,3 +31,13 @@ You are able to:
 * Build your own apps from sources
 
 ### Building from sources
+
+#### Requirements
+
+**Server**
+
+*   С++ compler supporting С++ 17
+*   [CMake](https://cmake.org/install) (3.5 or higher)
+*   [Drogon](https://drogon.docsforge.com/master/installation) (использовалась 1.7.5)
+*   [Boost](https://www.boost.org/doc/libs/1_79_0/more/getting_started/unix-variants.html) (1.61.0 or higher)
+*   [LCM](https://lcm-proj.github.io/build_instructions.html) (1.4.0 or higher)

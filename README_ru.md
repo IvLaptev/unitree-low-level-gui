@@ -27,3 +27,14 @@
 ## Запуск
 
 ### Сборка из исходников
+
+#### Требования
+
+**Сервер**
+
+*   С++ компилятор с поддержкой стандарта С++ 17
+*   [CMake](https://cmake.org/install) (3.5 или выше)
+*   [Drogon](https://drogon.docsforge.com/master/installation) (использовалась 1.7.5)
+*   [Boost](https://www.boost.org/doc/libs/1_79_0/more/getting_started/unix-variants.html) (1.61.0 или выше)
+*   [LCM](https://lcm-proj.github.io/build_instructions.html) (1.4.0 или выше)
+
