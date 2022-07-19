@@ -1,115 +1,198 @@
-import 'package:flutter/material.dart';
+import 'package:fluent_ui/fluent_ui.dart' hide Page;
+import 'package:gui/screens/HomePage.dart';
+import 'package:gui/screens/SettingsPage.dart';
+import 'package:gui/widgets/page.dart';
+import 'package:window_manager/window_manager.dart';
 
-void main() {
+const String appTitle = 'Robot GUI';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await windowManager.ensureInitialized();
+
+  windowManager.waitUntilReadyToShow().then((_) async {
+    await windowManager.setTitleBarStyle(TitleBarStyle.hidden,
+        windowButtonVisibility: false);
+    await windowManager.setSize(const Size(755, 545));
+    await windowManager.setMinimumSize(const Size(654, 600));
+    await windowManager.center();
+    await windowManager.show();
+    await windowManager.setPreventClose(true);
+    await windowManager.setSkipTaskbar(false);
+  });
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    return const FluentApp(
+      debugShowCheckedModeBanner: false,
+      title: appTitle,
+      home: BaseLayout(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class BaseLayout extends StatefulWidget {
+  const BaseLayout({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _BaseLayoutState createState() => _BaseLayoutState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _BaseLayoutState extends State<BaseLayout> with WindowListener {
+  int index = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  final content = <Page>[HomePage(), SettingsPage()];
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+    return NavigationView(
+      appBar: NavigationAppBar(
+          automaticallyImplyLeading: false,
+          title: const DragToMoveArea(
+              child: Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: Text('    $appTitle'),
+          )),
+          actions: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: const [WindowButtons()],
+          ),
+          height: 35),
+      pane: NavigationPane(
+          selected: index,
+          onChanged: (i) {
+            setState(() => index = i);
+          },
+          items: [
+            PaneItem(
+                icon: const Icon(FluentIcons.add_to_shopping_list),
+                title: const Text('Motions'))
           ],
-        ),
+          footerItems: [
+            PaneItemSeparator(),
+            PaneItem(
+                icon: const Icon(FluentIcons.settings),
+                title: const Text('Settings'))
+          ]),
+      content: NavigationBody(
+        index: index,
+        children: content.transform(context),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
+
+class WindowButtons extends StatelessWidget {
+  const WindowButtons({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox(
+      width: 138,
+      height: 30,
+      child: WindowCaption(
+        backgroundColor: Colors.transparent,
+      ),
+    );
+  }
+}
+
+// void main() {
+//   runApp(const MyApp());
+
+//   doWhenWindowReady(() {
+//     final win = appWindow;
+//     const initialSize = Size(600, 450);
+//     win.minSize = initialSize;
+//     win.size = initialSize;
+//     win.alignment = Alignment.center;
+//     win.title = "Robot GUI";
+//     win.show();
+//   });
+// }
+
+// const borderColor = Color.fromARGB(0, 50, 189, 207);
+
+// class MyApp extends StatelessWidget {
+//   const MyApp({Key? key}) : super(key: key);
+
+//   // This widget is the root of your application.
+//   @override
+//   Widget build(BuildContext context) {
+//     return FluentApp(
+//       title: 'Robot GUI',
+//       debugShowCheckedModeBanner: false,
+//       home: NavigationView(
+//         appBar: NavigationAppBar(
+//           title: Container(
+//             color: const Color(0xffe9ebec),
+//             child: Row(children: [
+//               Expanded(child: MoveWindow()),
+//               const WindowButtons()
+//             ]),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// // Windows bar buttons settings
+
+// final buttonColors = WindowButtonColors(
+//     iconNormal: const Color(0xFF444444),
+//     mouseOver: const Color(0xFFD0D2D5),
+//     mouseDown: const Color(0xFFB2B4B8),
+//     iconMouseOver: const Color(0xFF000000),
+//     iconMouseDown: const Color(0xFF000000));
+
+// final closeButtonColors = WindowButtonColors(
+//     iconNormal: const Color(0xFF444444),
+//     mouseOver: const Color(0xFFe81123),
+//     mouseDown: const Color(0xFFE36571),
+//     iconMouseOver: const Color(0xFFFFFFFF),
+//     iconMouseDown: const Color(0xFFFFFFFF));
+
+// class WindowButtons extends StatefulWidget {
+//   const WindowButtons({Key? key}) : super(key: key);
+
+//   @override
+//   _WindowButtonState createState() => _WindowButtonState();
+// }
+
+// class _WindowButtonState extends State<WindowButtons> {
+//   void maximizeOrRestore() {
+//     setState(() {
+//       appWindow.maximizeOrRestore();
+//     });
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       children: [
+//         MinimizeWindowButton(
+//           colors: buttonColors,
+//         ),
+//         appWindow.isMaximized
+//             ? RestoreWindowButton(
+//                 colors: buttonColors,
+//                 onPressed: maximizeOrRestore,
+//               )
+//             : MaximizeWindowButton(
+//                 colors: buttonColors,
+//                 onPressed: maximizeOrRestore,
+//               ),
+//         CloseWindowButton(
+//           colors: closeButtonColors,
+//         )
+//       ],
+//     );
+//   }
+// }
