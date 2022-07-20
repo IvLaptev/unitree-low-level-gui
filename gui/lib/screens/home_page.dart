@@ -1,133 +1,165 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gui/bloc/motions_bloc.dart';
 import 'package:gui/widgets/page.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends ScrollablePage {
   @override
   Widget buildHeader(BuildContext context) {
-    return PageHeader(
-      title: const Text('Fluent UI for Flutter Showcase App'),
-      commandBar: Row(children: const [Text('Source code')]),
-    );
+    MotionsBloc bloc = Provider.of<MotionsBloc>(context);
+
+    return StreamBuilder(
+        stream: bloc.motions,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return PageHeader(
+            title: const Text('Motions'),
+            commandBar: Row(children: [
+              Button(
+                  child: const Icon(FluentIcons.add),
+                  onPressed: () {
+                    snapshot.data.add(Motion());
+                    bloc.changeMotions.add(snapshot.data);
+                  }),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
+                child: Button(
+                    child: const Icon(FluentIcons.play), onPressed: () {}),
+              )
+            ]),
+          );
+        });
   }
 
   bool selected = true;
 
   @override
   List<Widget> buildScrollable(BuildContext context) {
-    assert(debugCheckHasFluentTheme(context));
+    MotionsBloc bloc = Provider.of<MotionsBloc>(context);
     final theme = FluentTheme.of(context);
+
     return [
-      Card(
-        child: Wrap(alignment: WrapAlignment.center, spacing: 10.0, children: [
-          InfoLabel(
-            label: 'Inputs',
-            child: ToggleSwitch(
-              checked: selected,
-              onChanged: (v) => setState(() => selected = v),
-            ),
-          ),
-          const RepaintBoundary(
-            child: Padding(
-              padding: EdgeInsetsDirectional.only(start: 4.0),
-              child: InfoLabel(
-                label: 'Progress',
-                child: SizedBox(height: 30, width: 30, child: ProgressRing()),
-              ),
-            ),
-          ),
-          InfoLabel(
-            label: 'Surfaces & Materials',
-            child: SizedBox(
-              height: 40,
-              width: 120,
-              child: Stack(children: [
-                Container(width: 25, height: 50, color: Colors.blue.lightest),
-                Positioned(
-                  right: 0,
-                  child: Container(
-                    width: 25,
-                    height: 50,
-                    color: Colors.blue.lightest,
-                  ),
-                ),
-                const Positioned.fill(child: Acrylic(luminosityAlpha: 0.5)),
-              ]),
-            ),
-          ),
-          const InfoLabel(
-            label: 'Icons',
-            child: Icon(FluentIcons.graph_symbol, size: 30.0),
-          ),
-          InfoLabel(
-            label: 'Colors',
-            child: SizedBox(
-              width: 40,
-              height: 30,
-              child: Wrap(
-                children: <Color>[
-                  ...Colors.accentColors,
-                  Colors.successPrimaryColor,
-                  Colors.warningPrimaryColor,
-                  Colors.errorPrimaryColor,
-                  Colors.grey,
-                ].map((color) {
-                  return Container(
-                    height: 10,
-                    width: 10,
-                    color: color,
-                  );
-                }).toList(),
-              ),
-            ),
-          ),
-          InfoLabel(
-            label: 'Typography',
-            child: ShaderMask(
-              shaderCallback: (rect) {
-                return LinearGradient(
-                  colors: [
-                    Colors.white,
-                    ...Colors.accentColors,
-                  ],
-                ).createShader(rect);
-              },
-              blendMode: BlendMode.srcATop,
-              child: const Text(
-                'ABCDEFGH',
-                style: TextStyle(fontSize: 24, shadows: [
-                  Shadow(offset: Offset(1, 1)),
-                ]),
-              ),
-            ),
-          ),
-        ]),
-      ),
-      const SizedBox(height: 22.0),
-      IconButton(
-        onPressed: () {},
-        icon: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'What\'s new on 4.0.0',
-              style:
-                  theme.typography.body?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            Text('June 21, 2022', style: theme.typography.caption),
-            Text(
-              'A native look-and-feel out of the box',
-              style: theme.typography.bodyLarge,
-            ),
-          ],
-        ),
-      ),
-      const SizedBox(height: 22.0),
-      Row(children: [
-        Text('SPONSORS', style: theme.typography.bodyStrong),
-        const SizedBox(width: 4.0),
-        const Icon(FluentIcons.heart_fill, size: 16.0),
-      ]),
-      const SizedBox(height: 4.0),
+      StreamBuilder(
+          stream: bloc.motions,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.data != null) {
+              List<Widget> widgets = <Widget>[];
+              List<Motion> motions = snapshot.data;
+
+              for (int i = 0; i < motions.length; i++) {
+                widgets.add(Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
+                  child: Expander(
+                      header: Text(
+                          'Leg: ${motions[i].leg}    |    Start time: ${motions[i].startTime}    |    Duration: ${motions[i].duration}'),
+                      content: Flex(
+                        direction: Axis.vertical,
+                        children: [
+                          Row(children: [
+                            Text(
+                              'General',
+                              style: theme.typography.bodyStrong,
+                            )
+                          ]),
+                          Row(
+                            children: [
+                              Expanded(
+                                  child: TextFormBox(
+                                header: 'Leg',
+                                initialValue: motions[i].leg.toString(),
+                                onChanged: (data) {
+                                  motions[i].leg = int.tryParse(data) ?? 0;
+                                  bloc.changeMotions.add(motions);
+                                },
+                              )),
+                              Expanded(
+                                  child: TextFormBox(
+                                header: 'Start time',
+                                initialValue: motions[i].startTime.toString(),
+                                onChanged: (data) {
+                                  motions[i].startTime =
+                                      int.tryParse(data) ?? 0;
+                                  bloc.changeMotions.add(motions);
+                                },
+                              )),
+                              Expanded(
+                                  child: TextFormBox(
+                                header: 'Duration',
+                                initialValue: motions[i].duration.toString(),
+                                onChanged: (data) {
+                                  motions[i].duration = int.tryParse(data) ?? 0;
+                                  bloc.changeMotions.add(motions);
+                                },
+                              )),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                'Position',
+                                style: theme.typography.bodyStrong,
+                              )
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                  child: TextFormBox(
+                                header: 'q',
+                                initialValue: motions[i].leg.toString(),
+                                onChanged: (data) {
+                                  motions[i].q = double.tryParse(data) ?? 0;
+                                  bloc.changeMotions.add(motions);
+                                },
+                              )),
+                              Expanded(
+                                  child: TextFormBox(
+                                header: 'dq',
+                                initialValue: motions[i].leg.toString(),
+                                onChanged: (data) {
+                                  motions[i].dq = double.tryParse(data) ?? 0;
+                                  bloc.changeMotions.add(motions);
+                                },
+                              )),
+                              Expanded(
+                                  child: TextFormBox(
+                                header: 'tau',
+                                initialValue: motions[i].leg.toString(),
+                                onChanged: (data) {
+                                  motions[i].tau = double.tryParse(data) ?? 0;
+                                  bloc.changeMotions.add(motions);
+                                },
+                              )),
+                              Expanded(
+                                  child: TextFormBox(
+                                header: 'kp',
+                                initialValue: motions[i].leg.toString(),
+                                onChanged: (data) {
+                                  motions[i].kp = double.tryParse(data) ?? 0;
+                                  bloc.changeMotions.add(motions);
+                                },
+                              )),
+                              Expanded(
+                                  child: TextFormBox(
+                                header: 'kd',
+                                initialValue: motions[i].leg.toString(),
+                                onChanged: (data) {
+                                  motions[i].kd = double.tryParse(data) ?? 0;
+                                  bloc.changeMotions.add(motions);
+                                },
+                              )),
+                            ],
+                          )
+                        ],
+                      )),
+                ));
+              }
+
+              return Column(
+                children: widgets,
+              );
+            }
+            return const Text('Wait for some time');
+          })
     ];
   }
 }

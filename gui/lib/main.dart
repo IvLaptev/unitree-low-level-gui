@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart' hide Page;
+import 'package:gui/bloc/motions_bloc.dart';
 import 'package:gui/bloc/settings_bloc.dart';
 import 'package:gui/screens/home_page.dart';
 import 'package:gui/screens/settings_page.dart';
@@ -33,9 +34,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<SettingsBloc>(
-          create: (_) => SettingsBloc(),
-        )
+        Provider<SettingsBloc>(create: (_) => SettingsBloc()),
+        Provider<MotionsBloc>(create: (_) => MotionsBloc()),
       ],
       child: const FluentApp(
         debugShowCheckedModeBanner: false,
@@ -111,97 +111,3 @@ class WindowButtons extends StatelessWidget {
     );
   }
 }
-
-// void main() {
-//   runApp(const MyApp());
-
-//   doWhenWindowReady(() {
-//     final win = appWindow;
-//     const initialSize = Size(600, 450);
-//     win.minSize = initialSize;
-//     win.size = initialSize;
-//     win.alignment = Alignment.center;
-//     win.title = "Robot GUI";
-//     win.show();
-//   });
-// }
-
-// const borderColor = Color.fromARGB(0, 50, 189, 207);
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({Key? key}) : super(key: key);
-
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return FluentApp(
-//       title: 'Robot GUI',
-//       debugShowCheckedModeBanner: false,
-//       home: NavigationView(
-//         appBar: NavigationAppBar(
-//           title: Container(
-//             color: const Color(0xffe9ebec),
-//             child: Row(children: [
-//               Expanded(child: MoveWindow()),
-//               const WindowButtons()
-//             ]),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// // Windows bar buttons settings
-
-// final buttonColors = WindowButtonColors(
-//     iconNormal: const Color(0xFF444444),
-//     mouseOver: const Color(0xFFD0D2D5),
-//     mouseDown: const Color(0xFFB2B4B8),
-//     iconMouseOver: const Color(0xFF000000),
-//     iconMouseDown: const Color(0xFF000000));
-
-// final closeButtonColors = WindowButtonColors(
-//     iconNormal: const Color(0xFF444444),
-//     mouseOver: const Color(0xFFe81123),
-//     mouseDown: const Color(0xFFE36571),
-//     iconMouseOver: const Color(0xFFFFFFFF),
-//     iconMouseDown: const Color(0xFFFFFFFF));
-
-// class WindowButtons extends StatefulWidget {
-//   const WindowButtons({Key? key}) : super(key: key);
-
-//   @override
-//   _WindowButtonState createState() => _WindowButtonState();
-// }
-
-// class _WindowButtonState extends State<WindowButtons> {
-//   void maximizeOrRestore() {
-//     setState(() {
-//       appWindow.maximizeOrRestore();
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(
-//       children: [
-//         MinimizeWindowButton(
-//           colors: buttonColors,
-//         ),
-//         appWindow.isMaximized
-//             ? RestoreWindowButton(
-//                 colors: buttonColors,
-//                 onPressed: maximizeOrRestore,
-//               )
-//             : MaximizeWindowButton(
-//                 colors: buttonColors,
-//                 onPressed: maximizeOrRestore,
-//               ),
-//         CloseWindowButton(
-//           colors: closeButtonColors,
-//         )
-//       ],
-//     );
-//   }
-// }
