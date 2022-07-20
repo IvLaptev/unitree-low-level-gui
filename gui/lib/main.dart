@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart' hide Page;
-import 'package:gui/bloc/SettingsBloc.dart';
-import 'package:gui/screens/HomePage.dart';
-import 'package:gui/screens/SettingsPage.dart';
+import 'package:gui/bloc/settings_bloc.dart';
+import 'package:gui/screens/home_page.dart';
+import 'package:gui/screens/settings_page.dart';
 import 'package:gui/widgets/page.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';

@@ -1,5 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gui/bloc/SettingsBloc.dart';
+import 'package:gui/bloc/settings_bloc.dart';
 import 'package:gui/widgets/page.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +39,6 @@ class SettingsPage extends ScrollablePage {
                       color: const Color(0xFFADADAD)),
                 );
               }
-
               return const Text('data');
             }),
       ),
