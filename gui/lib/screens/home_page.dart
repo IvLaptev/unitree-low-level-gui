@@ -15,15 +15,33 @@ class HomePage extends ScrollablePage {
             title: const Text('Motions'),
             commandBar: Row(children: [
               Button(
-                  child: const Icon(FluentIcons.add),
+                  child: const Icon(
+                    FluentIcons.chrome_close,
+                    size: 18.0,
+                  ),
                   onPressed: () {
-                    snapshot.data.add(Motion());
-                    bloc.changeMotions.add(snapshot.data);
+                    bloc.changeMotions.add(<Motion>[]);
                   }),
               Padding(
                 padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
                 child: Button(
-                    child: const Icon(FluentIcons.play), onPressed: () {}),
+                    child: const Icon(
+                      FluentIcons.add,
+                      size: 18.0,
+                    ),
+                    onPressed: () {
+                      snapshot.data.add(Motion());
+                      bloc.changeMotions.add(snapshot.data);
+                    }),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
+                child: Button(
+                    child: const Icon(
+                      FluentIcons.play,
+                      size: 18.0,
+                    ),
+                    onPressed: () {}),
               )
             ]),
           );
