@@ -37,7 +37,9 @@ dependencies:
   fluent_ui: ^3.12.0
   window_manager: ^0.2.5
   sqflite:
-  path:
+  path_provider:
+  provider: ^6.0.3
+  rxdart:
 
 dev_dependencies:
   flutter_test:

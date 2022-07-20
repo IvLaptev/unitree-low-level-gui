@@ -1,7 +1,9 @@
 import 'package:fluent_ui/fluent_ui.dart' hide Page;
+import 'package:gui/bloc/SettingsBloc.dart';
 import 'package:gui/screens/HomePage.dart';
 import 'package:gui/screens/SettingsPage.dart';
 import 'package:gui/widgets/page.dart';
+import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
 const String appTitle = 'Robot GUI';
@@ -29,10 +31,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const FluentApp(
-      debugShowCheckedModeBanner: false,
-      title: appTitle,
-      home: BaseLayout(),
+    return MultiProvider(
+      providers: [
+        Provider<SettingsBloc>(
+          create: (_) => SettingsBloc(),
+        )
+      ],
+      child: const FluentApp(
+        debugShowCheckedModeBanner: false,
+        title: appTitle,
+        home: BaseLayout(),
+      ),
     );
   }
 }
