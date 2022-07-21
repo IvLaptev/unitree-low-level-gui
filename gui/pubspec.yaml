@@ -40,6 +40,7 @@ dependencies:
   path_provider:
   provider: ^6.0.3
   rxdart:
+  http:
 
 dev_dependencies:
   flutter_test:

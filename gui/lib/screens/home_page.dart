@@ -1,5 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gui/bloc/motions_bloc.dart';
+import 'package:gui/models/motion.dart';
+import 'package:gui/resources/api_provider.dart';
 import 'package:gui/widgets/page.dart';
 import 'package:provider/provider.dart';
 
@@ -41,7 +43,16 @@ class HomePage extends ScrollablePage {
                       FluentIcons.play,
                       size: 18.0,
                     ),
-                    onPressed: () {}),
+                    onPressed: () {
+                      ApiProvider.sendMotions(snapshot.data)
+                          .then((_) => showSnackbar(
+                              context,
+                              const Snackbar(
+                                  extended: true,
+                                  content: Text('Successfully sent'))))
+                          .catchError((e) => showSnackbar(context,
+                              Snackbar(extended: true, content: Text(e))));
+                    }),
               )
             ]),
           );
