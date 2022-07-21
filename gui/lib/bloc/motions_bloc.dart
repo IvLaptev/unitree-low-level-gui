@@ -1,18 +1,8 @@
 import 'dart:async';
 
+import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gui/models/motion.dart';
 import 'package:rxdart/rxdart.dart';
-
-class Motion {
-  int leg = 0;
-  int startTime = 0;
-  int duration = 0;
-
-  double q = 0;
-  double dq = 0;
-  double tau = 0;
-  double kp = 0;
-  double kd = 0;
-}
 
 class MotionsBloc {
   List<Motion> _motions = <Motion>[];
