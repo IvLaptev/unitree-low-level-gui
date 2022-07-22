@@ -2,12 +2,13 @@
 
 #include <drogon/drogon.h>
 #include <server/models/motion.h>
+#include <iostream>
 
 namespace drogon
 {
     template<>
     std::vector<Server::Motion> fromRequest(const drogon::HttpRequest &req)
-    {
+    { 
         std::vector<Server::Motion> motions = {};
         auto json = req.getJsonObject();
 
@@ -28,6 +29,7 @@ namespace drogon
 
             motions.push_back(motion);
         }
+        // std::cout << (*json) << std::endl;
 
         return motions;
     }

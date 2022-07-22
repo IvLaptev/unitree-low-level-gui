@@ -1,5 +1,6 @@
 #include <robot/program.h>
 #include <server/store.h>
+#include <robot/robot.h>
 #include <iostream>
 
 unsigned get_max_ticks(const std::vector<Server::Motion> &motions)
@@ -22,17 +23,21 @@ Robot::Program::Program(std::vector<Server::Motion> &motions)
     max_ticks = get_max_ticks(motions) + 100;
 
     // Creating a vector for each leg where there will be assigned one motion for every tick
-    legs_commands.resize(12);
-    for (int i = 0; i < 12; i++)
+    legs_commands.resize(ROBOT_SERVOS_COUNT);
+    for (int i = 0; i < ROBOT_SERVOS_COUNT; i++)
     {
         legs_commands[i].resize(max_ticks, -1);
     }
+    
+    // std::cout << max_ticks << std::endl;
 
     for (int i = 0; i < motions.size(); i++)
     {
         motions[i].start_time = 50 + motions[i].start_time;
+
         for (int j = 0; j < motions[i].duration; j++)
         {
+            // std::cout << i << ":\t" << j << "\t" << (unsigned)motions[i].leg << "\t" << motions[i].start_time + j << std::endl;
             legs_commands[motions[i].leg][motions[i].start_time + j] = i;
         }
     }
@@ -58,7 +63,7 @@ void Robot::Program::next_tick(const UNITREE_LEGGED_SDK::LowState &state, UNITRE
 {
     auto motions = Server::Store::getData().getMotions();
 
-    for (short i = 0; i < 12; i++)
+    for (short i = 0; i < ROBOT_SERVOS_COUNT; i++)
     {
         int motion_index = legs_commands[i][curr_tick];
         auto motion = motions[motion_index];
@@ -83,6 +88,9 @@ void Robot::Program::next_tick(const UNITREE_LEGGED_SDK::LowState &state, UNITRE
 
             cmd.motorCmd[i].Kp = motion.Kp;
             cmd.motorCmd[i].Kd = motion.Kd;
+
+            Server::Log log = Server::logFromObjects(i, curr_tick, motion_index, cmd.motorCmd[i], state.motorState[i]);
+            Server::Store::getData().addLog(log);
         }
     }
     curr_tick += 1;

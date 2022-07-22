@@ -1,6 +1,9 @@
 #pragma once
 
 #include <unitree_legged_sdk/unitree_legged_sdk.h>
+#include <server/models/log.h>
+
+#define ROBOT_SERVOS_COUNT  12
 
 namespace Robot
 {
@@ -27,4 +30,9 @@ namespace Robot
 
         UNITREE_LEGGED_SDK::LowState* getState();
     };
+}
+
+namespace Server
+{
+    Log logFromObjects(uint8_t leg, int tick, int motion_number, const UNITREE_LEGGED_SDK::MotorCmd &cmd, const UNITREE_LEGGED_SDK::MotorState &state);
 }
