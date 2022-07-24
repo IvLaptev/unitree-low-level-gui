@@ -33,8 +33,6 @@ Robot::Program::Program(std::vector<Server::Motion> &motions)
 
     for (int i = 0; i < motions.size(); i++)
     {
-        motions[i].start_time = 50 + motions[i].start_time;
-
         for (int j = 0; j < motions[i].duration; j++)
         {
             // std::cout << i << ":\t" << j << "\t" << (unsigned)motions[i].leg << "\t" << motions[i].start_time + j << std::endl;
@@ -71,9 +69,11 @@ void Robot::Program::next_tick(const UNITREE_LEGGED_SDK::LowState &state, UNITRE
         if (motion_index > -1)
         {
             int ticks_left = motion.start_time + motion.duration - curr_tick;
+            std::cout << "Left: " << ticks_left << "\tStart: " << motion.start_time << std::endl;
             if (ticks_left > 0)
             {
                 float q_step = (motion.q - state.motorState[i].q) / ticks_left;
+                std::cout << q_step << std::endl;
 
                 cmd.motorCmd[i].q = state.motorState[i].q + q_step;
             }

@@ -1,4 +1,5 @@
 #include <server/store.h>
+#include <iostream>
 
 Server::Store& Server::Store::getData()
 {
@@ -28,16 +29,24 @@ void Server::Store::nextMotion()
     motions.erase(motions.begin());
 }
 
-std::vector<Server::Log> Server::Store::getLogs()
+Json::Value Server::Store::getLogs()
 {
+    Json::Value result = {};
+    
     if (logs.size())
     {
-        auto result = logs[0];
+        auto targetLogs = logs[0];
+        
 
-        return result;
+        for (int i = 0; i < targetLogs.size(); i++)
+        {
+            result[i] = Server::toJson(targetLogs[i]);
+        }
+
+        removeUsedLogs();
     }
 
-    return {};
+    return result;
 }
 
 void Server::Store::createNewLogsGroup()
@@ -48,4 +57,9 @@ void Server::Store::createNewLogsGroup()
 void Server::Store::addLog(Server::Log &log)
 {
     logs[logs.size() - 1].push_back(log);
+}
+
+void Server::Store::removeUsedLogs()
+{
+    logs.erase(logs.begin());
 }

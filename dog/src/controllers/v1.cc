@@ -27,3 +27,11 @@ void Server::V1::setMotions(const drogon::HttpRequestPtr &req,
     resp->setStatusCode(drogon::k200OK);
     callback(resp);
 }
+
+void Server::V1::getData(const drogon::HttpRequestPtr &req,
+                  std::function<void (const drogon::HttpResponsePtr &)> &&callback)
+{
+    auto resp = drogon::HttpResponse::newHttpJsonResponse(Server::Store::getData().getLogs());
+    resp->setStatusCode(drogon::k200OK);
+    callback(resp);
+}

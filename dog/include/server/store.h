@@ -28,10 +28,12 @@ namespace Server
 
         void nextMotion();
 
-        std::vector<Server::Log> getLogs();
+        Json::Value getLogs();
 
         void createNewLogsGroup();
 
         void addLog(Server::Log&);
+
+        void removeUsedLogs();
     };
 }

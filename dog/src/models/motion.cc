@@ -17,7 +17,7 @@ namespace drogon
             Server::Motion motion;
 
             motion.leg = json_part["leg"].asUInt();
-            motion.start_time = json_part["start_time"].asUInt();
+            motion.start_time = json_part["start_time"].asUInt() + 50;
             motion.duration = json_part["duration"].asUInt();
             motion.sleep_time = json_part["sleep_time"].asUInt();
             
