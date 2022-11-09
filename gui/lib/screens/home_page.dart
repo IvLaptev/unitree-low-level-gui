@@ -78,6 +78,7 @@ class HomePage extends ScrollablePage {
                 widgets.add(Padding(
                   padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
                   child: Expander(
+                      contentBackgroundColor: const Color(0xFFFFFFFF),
                       header: Text(
                           'Leg: ${motions[i].leg}    |    Start time: ${motions[i].startTime}    |    Duration: ${motions[i].duration}'),
                       content: Flex(

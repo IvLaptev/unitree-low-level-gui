@@ -1,8 +1,13 @@
 import 'package:fluent_ui/fluent_ui.dart' hide Page;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gui/bloc/minerva/minerva_bloc.dart';
 import 'package:gui/bloc/motions_bloc.dart';
 import 'package:gui/bloc/settings_bloc.dart';
+
 import 'package:gui/screens/home_page.dart';
+import 'package:gui/screens/minerva_page.dart';
 import 'package:gui/screens/settings_page.dart';
+
 import 'package:gui/widgets/page.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
@@ -37,10 +42,16 @@ class MyApp extends StatelessWidget {
         Provider<SettingsBloc>(create: (_) => SettingsBloc()),
         Provider<MotionsBloc>(create: (_) => MotionsBloc()),
       ],
-      child: const FluentApp(
-        debugShowCheckedModeBanner: false,
-        title: appTitle,
-        home: BaseLayout(),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<MinervaBloc>(
+              create: (BuildContext context) => MinervaBloc())
+        ],
+        child: const FluentApp(
+          debugShowCheckedModeBanner: false,
+          title: appTitle,
+          home: BaseLayout(),
+        ),
       ),
     );
   }
@@ -56,7 +67,7 @@ class BaseLayout extends StatefulWidget {
 class _BaseLayoutState extends State<BaseLayout> with WindowListener {
   int index = 0;
 
-  final content = <Page>[HomePage(), SettingsPage()];
+  final content = <Page>[HomePage(), MinervaPage(), SettingsPage()];
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +92,10 @@ class _BaseLayoutState extends State<BaseLayout> with WindowListener {
           items: [
             PaneItem(
                 icon: const Icon(FluentIcons.add_to_shopping_list),
-                title: const Text('Motions'))
+                title: const Text('Motions')),
+            PaneItem(
+                icon: const Icon(FluentIcons.charticulator_linking_data),
+                title: const Text('Minerva'))
           ],
           footerItems: [
             PaneItemSeparator(),

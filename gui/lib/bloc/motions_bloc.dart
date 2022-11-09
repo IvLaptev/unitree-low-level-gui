@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gui/models/motion.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -18,7 +17,7 @@ class MotionsBloc {
   Stream get motions => _motionsStream.stream;
   Sink get _setValue => _motionsStream.sink;
 
-  StreamController _actionController = StreamController<List<Motion>>();
+  final StreamController _actionController = StreamController<List<Motion>>();
   StreamSink get changeMotions => _actionController.sink;
 
   void changeStream(data) async {
