@@ -1,6 +1,8 @@
 enum ActionCommands {
   setActions('actions.set'),
-  getActions('actions.get');
+  getActions('actions.get'),
+  startAction('action.start'),
+  stopAction('action.stop');
 
   const ActionCommands(this.message);
 

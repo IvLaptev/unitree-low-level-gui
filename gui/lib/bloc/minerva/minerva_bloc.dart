@@ -28,14 +28,14 @@ class MinervaBloc extends Bloc<MinervaEvent, MinervaState> {
   }
 
   void _onActionStarted(ActionStarted event, Emitter<MinervaState> emit) async {
-    actionsProvider!.startAction();
+    actionsProvider!.startAction(event.actionId);
     state.actions.firstWhere((action) => event.actionId == action.id).started =
         true;
     emit(MinervaState(actions: state.actions));
   }
 
   void _onActionStopped(ActionStopped event, Emitter<MinervaState> emit) async {
-    actionsProvider!.stopAction();
+    actionsProvider!.stopAction(event.actionId);
     state.actions.firstWhere((action) => event.actionId == action.id).started =
         false;
     emit(MinervaState(actions: state.actions));

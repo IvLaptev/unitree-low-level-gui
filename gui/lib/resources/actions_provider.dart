@@ -33,12 +33,20 @@ class ActionsProvider {
     }
   }
 
-  void startAction() {
-    // TODO: start action
+  void startAction(String actionId) {
+    if (channel != null) {
+      channel!.sink.add(json.encode(
+          WsMessage(cmd: ActionCommands.startAction, body: [actionId])
+              .toJson()));
+    }
   }
 
-  void stopAction() {
-    // TODO: stop action
+  void stopAction(String actionId) {
+    if (channel != null) {
+      channel!.sink.add(json.encode(
+          WsMessage(cmd: ActionCommands.stopAction, body: [actionId])
+              .toJson()));
+    }
   }
 
   void _setActions(dynamic body) {
