@@ -2,12 +2,14 @@ enum ActionCommands {
   setActions('actions.set'),
   getActions('actions.get'),
   startAction('action.start'),
-  stopAction('action.stop');
+  stopAction('action.stop'),
+  addActionLogs('action.logs');
 
   const ActionCommands(this.message);
 
   factory ActionCommands.fromString(String msg) {
     ActionCommands? elem;
+    print(msg);
     for (var element in ActionCommands.values) {
       if (element.message == msg) {
         elem = element;

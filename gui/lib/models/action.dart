@@ -8,13 +8,13 @@ class Action {
       {required this.id,
       required this.title,
       required this.description,
-      this.logs = '',
+      this.logs = const <String>[],
       this.started = false});
 
   String id;
   String title;
   String description;
-  String logs;
+  List<String> logs;
   bool started;
 
   factory Action.fromJson(Map<String, dynamic> json) => Action(

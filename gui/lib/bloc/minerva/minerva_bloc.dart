@@ -13,6 +13,7 @@ class MinervaBloc extends Bloc<MinervaEvent, MinervaState> {
     on<ActionsReceived>(_onActionsReceived);
     on<ActionStarted>(_onActionStarted);
     on<ActionStopped>(_onActionStopped);
+    on<ActionLogsReceived>(_onActionLogsReceived);
 
     actionsProvider = ActionsProvider(add);
   }
@@ -38,6 +39,19 @@ class MinervaBloc extends Bloc<MinervaEvent, MinervaState> {
     actionsProvider!.stopAction(event.actionId);
     state.actions.firstWhere((action) => event.actionId == action.id).started =
         false;
+    emit(MinervaState(actions: state.actions));
+  }
+
+  void _onActionLogsReceived(
+      ActionLogsReceived event, Emitter<MinervaState> emit) async {
+    List<String> logs = state.actions
+        .firstWhere((action) => event.actionId == action.id)
+        .logs
+        .toList();
+    logs.add(event.logLine);
+    state.actions.firstWhere((action) => event.actionId == action.id).logs =
+        logs;
+    print(state.actions);
     emit(MinervaState(actions: state.actions));
   }
 }

@@ -21,6 +21,10 @@ class ActionsProvider {
           _setActions(message.body);
         } else if (message.cmd == ActionCommands.stopAction) {
           _addEvent(ActionStopped(message.body[0]));
+        } else if (message.cmd == ActionCommands.addActionLogs) {
+          print(message.body);
+          _addEvent(ActionLogsReceived(
+              message.body[0]['Id'], message.body[0]['Line']));
         }
       });
     } catch (e) {

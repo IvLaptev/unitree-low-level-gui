@@ -21,3 +21,10 @@ class ActionStopped extends MinervaEvent {
 
   final String actionId;
 }
+
+class ActionLogsReceived extends MinervaEvent {
+  ActionLogsReceived(this.actionId, this.logLine);
+
+  final String actionId;
+  final String logLine;
+}

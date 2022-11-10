@@ -77,7 +77,7 @@ class MinervaPage extends ScrollablePage {
                         Column(children: [
                           Text('Description: ${action.description}'),
                           Text(
-                            'Place for logs',
+                            action.logs.join('\n'),
                             style: theme.typography.bodyStrong,
                           )
                         ]),
