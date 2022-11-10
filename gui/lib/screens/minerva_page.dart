@@ -6,7 +6,34 @@ import 'package:gui/widgets/page.dart';
 class MinervaPage extends ScrollablePage {
   @override
   Widget buildHeader(BuildContext context) {
-    return const PageHeader(title: Text('Minerva control'));
+    return PageHeader(
+      title: const Text('Minerva control'),
+      commandBar: Row(children: [
+        Tooltip(
+          message: 'Minerva logs',
+          child: Button(
+              child: const Icon(
+                FluentIcons.repair,
+                size: 18.0,
+              ),
+              onPressed: () {
+                _restoreActions(context);
+              }),
+        ),
+        const SizedBox(width: 4),
+        Tooltip(
+          message: 'Refresh actions',
+          child: Button(
+              child: const Icon(
+                FluentIcons.update_restore,
+                size: 18.0,
+              ),
+              onPressed: () {
+                _restoreActions(context);
+              }),
+        ),
+      ]),
+    );
   }
 
   @override
@@ -62,7 +89,7 @@ class MinervaPage extends ScrollablePage {
               children: actions,
             );
           } else {
-            context.read<MinervaBloc>().add(ActionsRequested());
+            _restoreActions(context);
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
@@ -76,5 +103,9 @@ class MinervaPage extends ScrollablePage {
         },
       )
     ];
+  }
+
+  void _restoreActions(BuildContext context) {
+    BlocProvider.of<MinervaBloc>(context).add(ActionsRequested());
   }
 }
