@@ -19,6 +19,8 @@ class ActionsProvider {
 
         if (message.cmd == ActionCommands.setActions) {
           _setActions(message.body);
+        } else if (message.cmd == ActionCommands.stopAction) {
+          _addEvent(ActionStopped(message.body[0]));
         }
       });
     } catch (e) {
