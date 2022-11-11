@@ -9,6 +9,7 @@ class MinervaBloc extends Bloc<MinervaEvent, MinervaState> {
   ActionsProvider? actionsProvider;
 
   MinervaBloc() : super(const MinervaState()) {
+    on<UrlChanged>(_onUrlChanged);
     on<ActionsRequested>(_onActionsRequested);
     on<ActionsReceived>(_onActionsReceived);
     on<ActionStarted>(_onActionStarted);
@@ -16,6 +17,10 @@ class MinervaBloc extends Bloc<MinervaEvent, MinervaState> {
     on<ActionLogsReceived>(_onActionLogsReceived);
 
     actionsProvider = ActionsProvider(add);
+  }
+
+  void _onUrlChanged(UrlChanged event, Emitter<MinervaState> emit) async {
+    actionsProvider!.setUrl(event.url);
   }
 
   void _onActionsRequested(

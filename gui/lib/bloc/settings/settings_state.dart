@@ -7,13 +7,13 @@ _generateSecret() => String.fromCharCodes(Iterable.generate(
     32, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
 class SettingsState {
-  SettingsState({this.host = '', this.port = '', this.secret = ''}) {
+  SettingsState({this.apiUrl = '', this.minervaUrl = '', this.secret = ''}) {
     if (secret.isEmpty) {
       secret = _generateSecret();
     }
   }
 
-  String host;
-  String port;
+  String apiUrl;
+  String minervaUrl;
   String secret;
 }

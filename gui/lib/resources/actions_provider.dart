@@ -8,28 +8,10 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 class ActionsProvider {
   WebSocketChannel? channel;
   final Function _addEvent;
+  String _apiUrl = '';
 
   ActionsProvider(this._addEvent) {
-    try {
-      channel =
-          WebSocketChannel.connect(Uri.parse('ws://localhost:8080/control'));
-
-      channel!.stream.listen((msg) {
-        WsMessage message = WsMessage.fromJson(json.decode(msg));
-
-        if (message.cmd == ActionCommands.setActions) {
-          _setActions(message.body);
-        } else if (message.cmd == ActionCommands.stopAction) {
-          _addEvent(ActionStopped(message.body[0]));
-        } else if (message.cmd == ActionCommands.addActionLogs) {
-          print(message.body);
-          _addEvent(ActionLogsReceived(
-              message.body[0]['Id'], message.body[0]['Line']));
-        }
-      });
-    } catch (e) {
-      print(e); // TODO: Snackbar with error
-    }
+    setUrl('localhost:8080');
   }
 
   void getActions() {
@@ -62,5 +44,32 @@ class ActionsProvider {
     }
 
     _addEvent(ActionsReceived(actions));
+  }
+
+  void setUrl(String url) {
+    _apiUrl = 'ws://$url/control';
+    print(_apiUrl);
+
+    try {
+      if (channel != null) {
+        channel!.sink.close();
+      }
+      channel = WebSocketChannel.connect(Uri.parse(_apiUrl));
+
+      channel!.stream.listen((msg) {
+        WsMessage message = WsMessage.fromJson(json.decode(msg));
+
+        if (message.cmd == ActionCommands.setActions) {
+          _setActions(message.body);
+        } else if (message.cmd == ActionCommands.stopAction) {
+          _addEvent(ActionStopped(message.body[0]));
+        } else if (message.cmd == ActionCommands.addActionLogs) {
+          _addEvent(ActionLogsReceived(
+              message.body[0]['Id'], message.body[0]['Line']));
+        }
+      });
+    } catch (e) {
+      print(e); // TODO: Snackbar with error
+    }
   }
 }

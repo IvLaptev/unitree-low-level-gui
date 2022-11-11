@@ -2,14 +2,14 @@ part of 'settings_bloc.dart';
 
 abstract class SettingsEvent {}
 
-class HostChanged extends SettingsEvent {
-  HostChanged(this.host);
+class ApiUrlChanged extends SettingsEvent {
+  ApiUrlChanged(this.url);
 
-  final String host;
+  final String url;
 }
 
-class PortChanged extends SettingsEvent {
-  PortChanged(this.port);
+class MinervaUrlChanged extends SettingsEvent {
+  MinervaUrlChanged(this.url);
 
-  final String port;
+  final String url;
 }

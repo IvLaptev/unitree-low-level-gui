@@ -8,19 +8,21 @@ part 'settings_state.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc() : super(SettingsState()) {
-    on<HostChanged>(_onHostChanged);
-    on<PortChanged>(_onPortChanged);
+    on<ApiUrlChanged>(_onApiUrlChangedChanged);
+    on<MinervaUrlChanged>(_onMinervaUrlChanged);
   }
 
-  void _onHostChanged(HostChanged event, Emitter emit) {
+  String _onApiUrlChangedChanged(ApiUrlChanged event, Emitter emit) {
     emit(SettingsState(
-        host: event.host, port: state.port, secret: state.secret));
-    ApiProvider.baseUrl = 'http://${event.host}:${state.port}';
+        apiUrl: event.url, minervaUrl: state.minervaUrl, secret: state.secret));
+    var result = 'http://${event.url}';
+    ApiProvider.setBaseUrl(result);
+    return result;
   }
 
-  void _onPortChanged(PortChanged event, Emitter emit) {
+  String _onMinervaUrlChanged(MinervaUrlChanged event, Emitter emit) {
     emit(SettingsState(
-        host: state.host, port: event.port, secret: state.secret));
-    ApiProvider.baseUrl = 'http://${state.host}:${event.port}';
+        apiUrl: state.apiUrl, minervaUrl: event.url, secret: state.secret));
+    return 'ws://${event.url}/control';
   }
 }
