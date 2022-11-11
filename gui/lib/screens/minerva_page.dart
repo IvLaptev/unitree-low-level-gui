@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gui/bloc/minerva/minerva_bloc.dart';
@@ -76,9 +78,24 @@ class MinervaPage extends ScrollablePage {
                       children: [
                         Column(children: [
                           Text('Description: ${action.description}'),
-                          Text(
-                            action.logs.join('\n'),
-                            style: theme.typography.bodyStrong,
+                          Container(
+                            width: double.infinity,
+                            decoration: const BoxDecoration(
+                                color: Colors.black,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8))),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Text(
+                                action.logs.join('\n'),
+                                style: const TextStyle(
+                                  color: Color(0xFFFFFFFF),
+                                  fontSize: 12,
+                                  height: 1.8,
+                                  fontFeatures: [FontFeature.tabularFigures()],
+                                ),
+                              ),
+                            ),
                           )
                         ]),
                       ],
