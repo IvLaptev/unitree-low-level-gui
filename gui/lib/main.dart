@@ -1,8 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart' hide Page;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gui/bloc/minerva/minerva_bloc.dart';
+import 'package:gui/bloc/settings/settings_bloc.dart';
 import 'package:gui/bloc/motions_bloc.dart';
-import 'package:gui/bloc/settings_bloc.dart';
 
 import 'package:gui/screens/home_page.dart';
 import 'package:gui/screens/minerva_page.dart';
@@ -39,13 +39,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<SettingsBloc>(create: (_) => SettingsBloc()),
+        // Provider<SettingsBloc>(create: (_) => SettingsBloc()),
         Provider<MotionsBloc>(create: (_) => MotionsBloc()),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider<MinervaBloc>(
-              create: (BuildContext context) => MinervaBloc())
+              create: (BuildContext context) => MinervaBloc()),
+          BlocProvider(create: (BuildContext context) => SettingsBloc())
         ],
         child: const FluentApp(
           debugShowCheckedModeBanner: false,

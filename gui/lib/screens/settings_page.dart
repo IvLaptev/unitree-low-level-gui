@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gui/bloc/settings_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gui/bloc/settings/settings_bloc.dart';
 import 'package:gui/widgets/page.dart';
-import 'package:provider/provider.dart';
 
 class SettingsPage extends ScrollablePage {
   @override
@@ -12,7 +12,6 @@ class SettingsPage extends ScrollablePage {
   @override
   List<Widget> buildScrollable(BuildContext context) {
     final theme = FluentTheme.of(context);
-    final bloc = Provider.of<SettingsBloc>(context);
 
     return [
       Text(
@@ -21,66 +20,44 @@ class SettingsPage extends ScrollablePage {
       ),
       Padding(
         padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
-        child: StreamBuilder(
-            stream: bloc.settings,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.data != null) {
-                return TextFormBox(
+        child: BlocBuilder<SettingsBloc, SettingsState>(
+            builder: (BuildContext context, SettingsState state) => TextFormBox(
                   header: 'Host',
-                  initialValue: snapshot.data.ip,
+                  initialValue: state.host,
                   maxLength: 15,
-                  onChanged: (data) {
-                    snapshot.data.ip = data;
-                    bloc.changeSettings.add(snapshot.data);
+                  onChanged: (host) {
+                    context.read<SettingsBloc>().add(HostChanged(host));
                   },
                   placeholder: '192.168.11.12',
                   placeholderStyle: theme.typography.body?.copyWith(
                       fontStyle: FontStyle.italic,
                       color: const Color(0xFFADADAD)),
-                );
-              }
-              return const Text('data');
-            }),
+                )),
       ),
       Padding(
         padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
-        child: StreamBuilder(
-          stream: bloc.settings,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.data != null) {
-              return TextFormBox(
-                header: 'Port',
-                initialValue: snapshot.data.port,
-                maxLength: 5,
-                onChanged: (data) {
-                  snapshot.data.port = data;
-                  bloc.changeSettings.add(snapshot.data);
-                },
-                placeholder: '8080',
-                placeholderStyle: theme.typography.body?.copyWith(
-                    fontStyle: FontStyle.italic,
-                    color: const Color(0xFFADADAD)),
-              );
-            }
-            return const Text('');
-          },
-        ),
+        child: BlocBuilder<SettingsBloc, SettingsState>(
+            builder: (BuildContext context, SettingsState state) => TextFormBox(
+                  header: 'Port',
+                  initialValue: state.port,
+                  maxLength: 5,
+                  onChanged: (port) {
+                    context.read<SettingsBloc>().add(PortChanged(port));
+                  },
+                  placeholder: '8080',
+                  placeholderStyle: theme.typography.body?.copyWith(
+                      fontStyle: FontStyle.italic,
+                      color: const Color(0xFFADADAD)),
+                )),
       ),
       Padding(
         padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
-        child: StreamBuilder(
-          stream: bloc.settings,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.data != null) {
-              return TextFormBox(
-                initialValue: snapshot.data.secret,
-                header: 'Secret',
-                enabled: false,
-              );
-            }
-            return const Text('');
-          },
-        ),
+        child: BlocBuilder<SettingsBloc, SettingsState>(
+            builder: (BuildContext context, SettingsState state) => TextFormBox(
+                  initialValue: state.secret,
+                  header: 'Secret',
+                  enabled: false,
+                )),
       )
     ];
   }
