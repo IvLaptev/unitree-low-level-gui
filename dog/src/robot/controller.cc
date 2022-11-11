@@ -33,6 +33,7 @@ void Robot::Controller::load_program()
             program = std::unique_ptr<Program>(new Program(motions));
             if (program)
             {
+                Server::Store::getData().createNewLogsGroup();
                 std::cout << "Loaded" << std::endl;
             }
             

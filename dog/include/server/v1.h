@@ -17,8 +17,8 @@ namespace Server
       // Set one sequence of motions
       METHOD_ADD(V1::setMotions, "/motions", drogon::Post);
 
-      // // Get logs from robot. Sent data is deleted from robot
-      // METHOD_ADD(V1::getData, "/records", drogon::Get);
+      // Get logs from robot. Sent data is deleted from robot
+      METHOD_ADD(V1::getData, "/logs", drogon::Get);
 
       METHOD_LIST_END
       
@@ -30,7 +30,7 @@ namespace Server
                   std::function<void (const drogon::HttpResponsePtr &)> &&callback,
                   std::vector<Server::Motion> &&pMotions);
       
-      // void getData(const drogon::HttpRequestPtr &req,
-      //             std::function<void (const drogon::HttpResponsePtr &)> &&callback);
+      void getData(const drogon::HttpRequestPtr &req,
+                  std::function<void (const drogon::HttpResponsePtr &)> &&callback);
   };
 } // namespace Server

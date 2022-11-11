@@ -4,8 +4,6 @@
 #include <stdint.h>
 #include <drogon/drogon.h>
 
-#define MOTION_NULL_LEG 200
-
 namespace Server
 {
     struct Motion

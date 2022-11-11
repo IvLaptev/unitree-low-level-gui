@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <server/models/motion.h>
+#include <server/models/log.h>
 
 namespace Server
 {
@@ -10,6 +11,8 @@ namespace Server
     {
         // Stores motions from gui app
         std::vector< std::vector<Server::Motion> > motions = {};
+        // Stores logs for different motions
+        std::vector< std::vector<Server::Log> > logs = {};
 
         Store() {}
         ~Store() {}
@@ -24,5 +27,13 @@ namespace Server
         void addMotions(std::vector<Server::Motion>);
 
         void nextMotion();
+
+        Json::Value getLogs();
+
+        void createNewLogsGroup();
+
+        void addLog(Server::Log&);
+
+        void removeUsedLogs();
     };
 }

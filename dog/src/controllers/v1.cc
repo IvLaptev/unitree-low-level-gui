@@ -21,8 +21,17 @@ void Server::V1::setMotions(const drogon::HttpRequestPtr &req,
 {
     // Save motions to store
     Server::Store::getData().addMotions(pMotions);
+    // std::cout << (pMotions.size()) << std::endl;
 
     auto resp = drogon::HttpResponse::newHttpResponse();
+    resp->setStatusCode(drogon::k200OK);
+    callback(resp);
+}
+
+void Server::V1::getData(const drogon::HttpRequestPtr &req,
+                  std::function<void (const drogon::HttpResponsePtr &)> &&callback)
+{
+    auto resp = drogon::HttpResponse::newHttpJsonResponse(Server::Store::getData().getLogs());
     resp->setStatusCode(drogon::k200OK);
     callback(resp);
 }

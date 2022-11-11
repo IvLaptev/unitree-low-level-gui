@@ -2,12 +2,13 @@
 
 #include <drogon/drogon.h>
 #include <server/models/motion.h>
+#include <iostream>
 
 namespace drogon
 {
     template<>
     std::vector<Server::Motion> fromRequest(const drogon::HttpRequest &req)
-    {
+    { 
         std::vector<Server::Motion> motions = {};
         auto json = req.getJsonObject();
 
@@ -16,7 +17,7 @@ namespace drogon
             Server::Motion motion;
 
             motion.leg = json_part["leg"].asUInt();
-            motion.start_time = json_part["start_time"].asUInt();
+            motion.start_time = json_part["start_time"].asUInt() + 50;
             motion.duration = json_part["duration"].asUInt();
             motion.sleep_time = json_part["sleep_time"].asUInt();
             
@@ -28,6 +29,7 @@ namespace drogon
 
             motions.push_back(motion);
         }
+        // std::cout << (*json) << std::endl;
 
         return motions;
     }
