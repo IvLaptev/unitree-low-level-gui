@@ -4,6 +4,12 @@ abstract class MinervaEvent {}
 
 class ActionsRequested extends MinervaEvent {}
 
+class UrlChanged extends MinervaEvent {
+  UrlChanged(this.url);
+
+  final String url;
+}
+
 class ActionsReceived extends MinervaEvent {
   ActionsReceived(this.actions);
 
