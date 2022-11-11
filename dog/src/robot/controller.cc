@@ -5,6 +5,7 @@
 
 Robot::Controller::Controller()
 {
+    // Creating connection with robot. Setting control to low
     robot = std::unique_ptr<Robot>(new Robot(UNITREE_LEGGED_SDK::LOWLEVEL));
 
     UNITREE_LEGGED_SDK::InitEnvironment();

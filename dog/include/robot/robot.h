@@ -7,6 +7,7 @@
 
 namespace Robot
 {
+    // Implements communication with Board Controller
     class Robot
     {
     public:
