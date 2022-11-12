@@ -46,4 +46,14 @@ class Motion {
         "kp": kp,
         "kd": kd,
       };
+
+  Motion copyOf() => Motion(
+      dq: dq,
+      duration: duration,
+      kd: kd,
+      kp: kp,
+      leg: leg,
+      q: q,
+      startTime: startTime,
+      tau: tau);
 }

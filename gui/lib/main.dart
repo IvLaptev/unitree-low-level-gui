@@ -1,15 +1,14 @@
 import 'package:fluent_ui/fluent_ui.dart' hide Page;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gui/bloc/minerva/minerva_bloc.dart';
-import 'package:gui/bloc/motions_bloc.dart';
-import 'package:gui/bloc/settings_bloc.dart';
+import 'package:gui/bloc/motions/motions_bloc.dart';
+import 'package:gui/bloc/settings/settings_bloc.dart';
 
 import 'package:gui/screens/home_page.dart';
 import 'package:gui/screens/minerva_page.dart';
 import 'package:gui/screens/settings_page.dart';
 
 import 'package:gui/widgets/page.dart';
-import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
 const String appTitle = 'Robot GUI';
@@ -37,21 +36,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiBlocProvider(
       providers: [
-        Provider<SettingsBloc>(create: (_) => SettingsBloc()),
-        Provider<MotionsBloc>(create: (_) => MotionsBloc()),
+        BlocProvider<MinervaBloc>(
+            create: (BuildContext context) => MinervaBloc()),
+        BlocProvider(create: (BuildContext context) => SettingsBloc()),
+        BlocProvider(create: (BuildContext context) => MotionsBloc())
       ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider<MinervaBloc>(
-              create: (BuildContext context) => MinervaBloc())
-        ],
-        child: const FluentApp(
-          debugShowCheckedModeBanner: false,
-          title: appTitle,
-          home: BaseLayout(),
-        ),
+      child: const FluentApp(
+        debugShowCheckedModeBanner: false,
+        title: appTitle,
+        home: BaseLayout(),
       ),
     );
   }
