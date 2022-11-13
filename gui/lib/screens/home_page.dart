@@ -2,6 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gui/bloc/motions/motions_bloc.dart';
 import 'package:gui/models/motion.dart';
+import 'package:gui/widgets/collapse.dart';
 import 'package:gui/widgets/motion_input.dart';
 import 'package:gui/widgets/page.dart';
 
@@ -58,18 +59,30 @@ class HomePage extends ScrollablePage {
         List<Widget> widgets = state.motions
             .asMap()
             .entries
-            .map((motion) => Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
-                  child: Expander(
-                      contentBackgroundColor: const Color(0xFFFFFFFF),
-                      header: Text(
-                          'Leg: ${motion.value.leg}    |    Start time: ${motion.value.startTime}    |    Duration: ${motion.value.duration}'),
-                      content: MotionInput(
-                        motion: motion.value,
-                        onChange: (Motion newMotion) => context
+            .map((motion) => Collapse(
+                  title: Text(
+                      'Leg: ${motion.value.leg}    |    Start time: ${motion.value.startTime}    |    Duration: ${motion.value.duration}'),
+                  actions: [
+                    Button(
+                      child: const Icon(
+                        FluentIcons.delete,
+                        size: 18.0,
+                      ),
+                      onPressed: () {
+                        context
                             .read<MotionsBloc>()
-                            .add(MotionChanged(newMotion, motion.key)),
-                      )),
+                            .add(MotionRemoved(motion.key));
+                      },
+                    )
+                  ],
+                  body: MotionInput(
+                    motion: motion.value,
+                    onChange: (Motion newMotion) => context
+                        .read<MotionsBloc>()
+                        .add(MotionChanged(newMotion, motion.key)),
+                    key: Key(
+                        motion.value.leg.toString() + motion.key.toString()),
+                  ),
                 ))
             .toList();
 
